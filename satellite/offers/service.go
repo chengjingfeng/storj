@@ -17,19 +17,19 @@ var (
 
 // Service allows access to offers info in the db
 type Service struct {
-	log    *zap.Logger
-	offers DB
+	log *zap.Logger
+	db  DB
 }
 
 // NewService creates a new offers db
-func NewService(log *zap.Logger, offers DB) (*Service, error) {
+func NewService(log *zap.Logger, db DB) (*Service, error) {
 	if log == nil {
 		return nil, errs.New("log can't be nil")
 	}
 
 	return &Service{
-		log:    log,
-		offers: offers,
+		log: log,
+		db:  db,
 	}, nil
 }
 
@@ -37,17 +37,31 @@ func NewService(log *zap.Logger, offers DB) (*Service, error) {
 func (s *Service) ListAllOffers(ctx context.Context) (offers []Offer, err error) {
 	defer mon.Task()(&ctx)(&err)
 
-	offers, err = s.offers.GetAllOffers(ctx)
+	offers, err = s.db.GetAllOffers(ctx)
 	if err != nil {
-		return nil, Error.Wrap(err)
+		return offers, Error.Wrap(err)
 	}
 
 	return
 }
 
-// Create will insert a new offer into the db
-func (s *Service) Create(ctx context.Context, offer *Offer) error {
-	err := s.offers.Create(ctx, offer)
+// Create inserts a new offer into the db
+func (s *Service) Create(ctx context.Context, offer *Offer) (err error) {
+	defer mon.Task()(&ctx)(&err)
+
+	err = s.db.Create(ctx, offer)
+	if err != nil {
+		return Error.Wrap(err)
+	}
+
+	return nil
+}
+
+// Update modifies an existing offer in the db
+func (s *Service) Update(ctx context.Context, offer *Offer) (err error) {
+	defer mon.Task()(&ctx)(&err)
+
+	err = s.db.Update(ctx, offer)
 	if err != nil {
 		return Error.Wrap(err)
 	}
