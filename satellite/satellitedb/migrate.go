@@ -681,7 +681,7 @@ func (db *DB) PostgresMigration() *migrate.Migration {
 						created_at timestamp with time zone NOT NULL,
 						status integer NOT NULL,
 						PRIMARY KEY ( id )
-					);`
+					);`,
 				},
 			},
 		},
