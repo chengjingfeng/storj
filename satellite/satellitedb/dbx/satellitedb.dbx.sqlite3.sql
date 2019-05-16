@@ -114,15 +114,6 @@ CREATE TABLE nodes (
 	contained INTEGER NOT NULL,
 	PRIMARY KEY ( id )
 );
-CREATE TABLE pending_audits (
-	node_id BLOB NOT NULL,
-	piece_id BLOB NOT NULL,
-	stripe_index INTEGER NOT NULL,
-	share_size INTEGER NOT NULL,
-	expected_share_hash BLOB NOT NULL,
-	reverify_count INTEGER NOT NULL,
-	PRIMARY KEY ( node_id )
-);
 CREATE TABLE offers (
 	id BLOB NOT NULL,
 	name TEXT NOT NULL,
@@ -137,6 +128,15 @@ CREATE TABLE offers (
 	created_at TIMESTAMP NOT NULL,
 	status INTEGER NOT NULL,
 	PRIMARY KEY ( id )
+);
+CREATE TABLE pending_audits (
+	node_id BLOB NOT NULL,
+	piece_id BLOB NOT NULL,
+	stripe_index INTEGER NOT NULL,
+	share_size INTEGER NOT NULL,
+	expected_share_hash BLOB NOT NULL,
+	reverify_count INTEGER NOT NULL,
+	PRIMARY KEY ( node_id )
 );
 CREATE TABLE projects (
 	id BLOB NOT NULL,
