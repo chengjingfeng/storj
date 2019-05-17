@@ -577,13 +577,13 @@ model offer (
 	field type int ( updatable )
 	
 	field credit int ( updatable ) 
-	field award_credit_duration int ( updatable )
-	field invitee_credit_duration int (updatable)
+	field award_credit_duration_days int ( updatable )
+	field invitee_credit_duration_days int (updatable)
 
 	field redeemable_cap int ( updatable )
 	field num_redeemed int (updatable)
 
-	field offer_duration int ( updatable)
+	field offer_duration_days int ( updatable)
 	field created_at timestamp (autoinsert)
 
 	field status int ( updatable )
