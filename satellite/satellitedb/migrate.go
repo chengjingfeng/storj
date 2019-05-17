@@ -645,8 +645,27 @@ func (db *DB) PostgresMigration() *migrate.Migration {
 				},
 			},
 			{
-				Description: "Create new tables for free credits program",
+				Description: "Adds pending_audits table, adds 'contained' column to nodes table",
 				Version:     20,
+				Action: migrate.SQL{
+					`ALTER TABLE nodes ADD contained boolean;
+					UPDATE nodes SET contained = false;
+					ALTER TABLE nodes ALTER COLUMN contained SET NOT NULL;`,
+
+					`CREATE TABLE pending_audits (
+						node_id bytea NOT NULL,
+						piece_id bytea NOT NULL,
+						stripe_index bigint NOT NULL,
+						share_size bigint NOT NULL,
+						expected_share_hash bytea NOT NULL,
+						reverify_count bigint NOT NULL,
+						PRIMARY KEY ( node_id )
+					);`,
+				},
+			},
+			{
+				Description: "Create new tables for free credits program",
+				Version:     21,
 				Action: migrate.SQL{`
 					CREATE TABLE offers (
 						id bytea NOT NULL,
@@ -654,11 +673,11 @@ func (db *DB) PostgresMigration() *migrate.Migration {
 						description text NOT NULL,
 						type integer NOT NULL,
 						credit integer NOT NULL,
-						award_credit_duration integer NOT NULL,
-						invitee_credit_duration integer NOT NULL,
+						award_credit_duration_days integer NOT NULL,
+						invitee_credit_duration_days integer NOT NULL,
 						redeemable_cap integer NOT NULL,
 						num_redeemed integer NOT NULL,
-						offer_duration integer NOT NULL,
+						offer_duration_days integer NOT NULL,
 						created_at timestamp with time zone NOT NULL,
 						status integer NOT NULL,
 						PRIMARY KEY ( id )

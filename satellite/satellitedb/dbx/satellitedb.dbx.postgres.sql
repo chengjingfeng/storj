@@ -111,6 +111,7 @@ CREATE TABLE nodes (
 	updated_at timestamp with time zone NOT NULL,
 	last_contact_success timestamp with time zone NOT NULL,
 	last_contact_failure timestamp with time zone NOT NULL,
+	contained boolean NOT NULL,
 	PRIMARY KEY ( id )
 );
 CREATE TABLE offers (
@@ -119,14 +120,23 @@ CREATE TABLE offers (
 	description text NOT NULL,
 	type integer NOT NULL,
 	credit integer NOT NULL,
-	award_credit_duration integer NOT NULL,
-	invitee_credit_duration integer NOT NULL,
+	award_credit_duration_days integer NOT NULL,
+	invitee_credit_duration_days integer NOT NULL,
 	redeemable_cap integer NOT NULL,
 	num_redeemed integer NOT NULL,
-	offer_duration integer NOT NULL,
+	offer_duration_days integer NOT NULL,
 	created_at timestamp with time zone NOT NULL,
 	status integer NOT NULL,
 	PRIMARY KEY ( id )
+);
+CREATE TABLE pending_audits (
+	node_id bytea NOT NULL,
+	piece_id bytea NOT NULL,
+	stripe_index bigint NOT NULL,
+	share_size bigint NOT NULL,
+	expected_share_hash bytea NOT NULL,
+	reverify_count bigint NOT NULL,
+	PRIMARY KEY ( node_id )
 );
 CREATE TABLE projects (
 	id bytea NOT NULL,
