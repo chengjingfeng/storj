@@ -17,7 +17,7 @@ type offersDB struct {
 func (o *offersDB) GetAllOffers(ctx context.Context) ([]offers.Offer, error) {
 	offersDbx, err := o.db.All_Offer(ctx)
 	if err != nil {
-		return nil, err
+		return nil, Errors.Wrap(err)
 	}
 
 	return offersFromDbx(offersDbx)
@@ -27,7 +27,7 @@ func (o *offersDB) GetAllOffers(ctx context.Context) ([]offers.Offer, error) {
 func (o *offersDB) Create(ctx context.Context, offer *offers.Offer) (*offers.Offer, error) {
 	offerID, err := uuid.New()
 	if err != nil {
-		return nil, err
+		return nil, Errors.Wrap(err)
 	}
 
 	createdOffer, err := o.db.Create_Offer(ctx,
@@ -45,7 +45,7 @@ func (o *offersDB) Create(ctx context.Context, offer *offers.Offer) (*offers.Off
 	)
 
 	if err != nil {
-		return nil, err
+		return nil, Errors.Wrap(err)
 	}
 
 	return convertDBOffer(createdOffer)
