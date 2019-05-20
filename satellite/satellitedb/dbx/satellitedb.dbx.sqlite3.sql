@@ -115,7 +115,7 @@ CREATE TABLE nodes (
 	PRIMARY KEY ( id )
 );
 CREATE TABLE offers (
-	id BLOB NOT NULL,
+	id INTEGER NOT NULL,
 	name TEXT NOT NULL,
 	description TEXT NOT NULL,
 	type INTEGER NOT NULL,

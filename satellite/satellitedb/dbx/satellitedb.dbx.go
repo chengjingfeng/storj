@@ -387,7 +387,7 @@ CREATE TABLE nodes (
 	PRIMARY KEY ( id )
 );
 CREATE TABLE offers (
-	id bytea NOT NULL,
+	id serial NOT NULL,
 	name text NOT NULL,
 	description text NOT NULL,
 	type integer NOT NULL,
@@ -669,7 +669,7 @@ CREATE TABLE nodes (
 	PRIMARY KEY ( id )
 );
 CREATE TABLE offers (
-	id BLOB NOT NULL,
+	id INTEGER NOT NULL,
 	name TEXT NOT NULL,
 	description TEXT NOT NULL,
 	type INTEGER NOT NULL,
@@ -2648,7 +2648,7 @@ func (f Node_Contained_Field) value() interface{} {
 func (Node_Contained_Field) _Column() string { return "contained" }
 
 type Offer struct {
-	Id                        []byte
+	Id                        int
 	Name                      string
 	Description               string
 	Type                      int
@@ -2680,10 +2680,10 @@ type Offer_Update_Fields struct {
 type Offer_Id_Field struct {
 	_set   bool
 	_null  bool
-	_value []byte
+	_value int
 }
 
-func Offer_Id(v []byte) Offer_Id_Field {
+func Offer_Id(v int) Offer_Id_Field {
 	return Offer_Id_Field{_set: true, _value: v}
 }
 
@@ -4729,7 +4729,6 @@ func (obj *postgresImpl) Create_ResetPasswordToken(ctx context.Context,
 }
 
 func (obj *postgresImpl) Create_Offer(ctx context.Context,
-	offer_id Offer_Id_Field,
 	offer_name Offer_Name_Field,
 	offer_description Offer_Description_Field,
 	offer_type Offer_Type_Field,
@@ -4743,7 +4742,6 @@ func (obj *postgresImpl) Create_Offer(ctx context.Context,
 	offer *Offer, err error) {
 
 	__now := obj.db.Hooks.Now().UTC()
-	__id_val := offer_id.value()
 	__name_val := offer_name.value()
 	__description_val := offer_description.value()
 	__type_val := offer_type.value()
@@ -4756,13 +4754,13 @@ func (obj *postgresImpl) Create_Offer(ctx context.Context,
 	__created_at_val := __now
 	__status_val := offer_status.value()
 
-	var __embed_stmt = __sqlbundle_Literal("INSERT INTO offers ( id, name, description, type, credit, award_credit_duration_days, invitee_credit_duration_days, redeemable_cap, num_redeemed, offer_duration_days, created_at, status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) RETURNING offers.id, offers.name, offers.description, offers.type, offers.credit, offers.award_credit_duration_days, offers.invitee_credit_duration_days, offers.redeemable_cap, offers.num_redeemed, offers.offer_duration_days, offers.created_at, offers.status")
+	var __embed_stmt = __sqlbundle_Literal("INSERT INTO offers ( name, description, type, credit, award_credit_duration_days, invitee_credit_duration_days, redeemable_cap, num_redeemed, offer_duration_days, created_at, status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) RETURNING offers.id, offers.name, offers.description, offers.type, offers.credit, offers.award_credit_duration_days, offers.invitee_credit_duration_days, offers.redeemable_cap, offers.num_redeemed, offers.offer_duration_days, offers.created_at, offers.status")
 
 	var __stmt = __sqlbundle_Render(obj.dialect, __embed_stmt)
-	obj.logStmt(__stmt, __id_val, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val)
+	obj.logStmt(__stmt, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val)
 
 	offer = &Offer{}
-	err = obj.driver.QueryRow(__stmt, __id_val, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val).Scan(&offer.Id, &offer.Name, &offer.Description, &offer.Type, &offer.Credit, &offer.AwardCreditDurationDays, &offer.InviteeCreditDurationDays, &offer.RedeemableCap, &offer.NumRedeemed, &offer.OfferDurationDays, &offer.CreatedAt, &offer.Status)
+	err = obj.driver.QueryRow(__stmt, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val).Scan(&offer.Id, &offer.Name, &offer.Description, &offer.Type, &offer.Credit, &offer.AwardCreditDurationDays, &offer.InviteeCreditDurationDays, &offer.RedeemableCap, &offer.NumRedeemed, &offer.OfferDurationDays, &offer.CreatedAt, &offer.Status)
 	if err != nil {
 		return nil, obj.makeErr(err)
 	}
@@ -7875,7 +7873,6 @@ func (obj *sqlite3Impl) Create_ResetPasswordToken(ctx context.Context,
 }
 
 func (obj *sqlite3Impl) Create_Offer(ctx context.Context,
-	offer_id Offer_Id_Field,
 	offer_name Offer_Name_Field,
 	offer_description Offer_Description_Field,
 	offer_type Offer_Type_Field,
@@ -7889,7 +7886,6 @@ func (obj *sqlite3Impl) Create_Offer(ctx context.Context,
 	offer *Offer, err error) {
 
 	__now := obj.db.Hooks.Now().UTC()
-	__id_val := offer_id.value()
 	__name_val := offer_name.value()
 	__description_val := offer_description.value()
 	__type_val := offer_type.value()
@@ -7902,12 +7898,12 @@ func (obj *sqlite3Impl) Create_Offer(ctx context.Context,
 	__created_at_val := __now
 	__status_val := offer_status.value()
 
-	var __embed_stmt = __sqlbundle_Literal("INSERT INTO offers ( id, name, description, type, credit, award_credit_duration_days, invitee_credit_duration_days, redeemable_cap, num_redeemed, offer_duration_days, created_at, status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")
+	var __embed_stmt = __sqlbundle_Literal("INSERT INTO offers ( name, description, type, credit, award_credit_duration_days, invitee_credit_duration_days, redeemable_cap, num_redeemed, offer_duration_days, created_at, status ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )")
 
 	var __stmt = __sqlbundle_Render(obj.dialect, __embed_stmt)
-	obj.logStmt(__stmt, __id_val, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val)
+	obj.logStmt(__stmt, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val)
 
-	__res, err := obj.driver.Exec(__stmt, __id_val, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val)
+	__res, err := obj.driver.Exec(__stmt, __name_val, __description_val, __type_val, __credit_val, __award_credit_duration_days_val, __invitee_credit_duration_days_val, __redeemable_cap_val, __num_redeemed_val, __offer_duration_days_val, __created_at_val, __status_val)
 	if err != nil {
 		return nil, obj.makeErr(err)
 	}
@@ -11127,7 +11123,6 @@ func (rx *Rx) Create_Node(ctx context.Context,
 }
 
 func (rx *Rx) Create_Offer(ctx context.Context,
-	offer_id Offer_Id_Field,
 	offer_name Offer_Name_Field,
 	offer_description Offer_Description_Field,
 	offer_type Offer_Type_Field,
@@ -11143,7 +11138,7 @@ func (rx *Rx) Create_Offer(ctx context.Context,
 	if tx, err = rx.getTx(ctx); err != nil {
 		return
 	}
-	return tx.Create_Offer(ctx, offer_id, offer_name, offer_description, offer_type, offer_credit, offer_award_credit_duration_days, offer_invitee_credit_duration_days, offer_redeemable_cap, offer_num_redeemed, offer_offer_duration_days, offer_status)
+	return tx.Create_Offer(ctx, offer_name, offer_description, offer_type, offer_credit, offer_award_credit_duration_days, offer_invitee_credit_duration_days, offer_redeemable_cap, offer_num_redeemed, offer_offer_duration_days, offer_status)
 
 }
 
@@ -11965,7 +11960,6 @@ type Methods interface {
 		node *Node, err error)
 
 	Create_Offer(ctx context.Context,
-		offer_id Offer_Id_Field,
 		offer_name Offer_Name_Field,
 		offer_description Offer_Description_Field,
 		offer_type Offer_Type_Field,

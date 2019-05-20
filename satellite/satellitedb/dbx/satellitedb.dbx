@@ -571,7 +571,7 @@ delete reset_password_token ( where reset_password_token.secret = ? )
 model offer (
 	key id
 	
-	field id blob
+	field id	serial 
 	field name text ( updatable )
 	field description text ( updatable )
 	field type int ( updatable )

@@ -115,7 +115,7 @@ CREATE TABLE nodes (
 	PRIMARY KEY ( id )
 );
 CREATE TABLE offers (
-	id bytea NOT NULL,
+	id serial NOT NULL,
 	name text NOT NULL,
 	description text NOT NULL,
 	type integer NOT NULL,
