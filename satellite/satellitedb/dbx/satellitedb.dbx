@@ -596,13 +596,9 @@ read one (
 
 read all ( select offer )
 
-read all (
+read one (
 	select offer
 	where offer.status = ?
-)
-
-read all (
-	select offer
 	where offer.type = ?
 )
 
