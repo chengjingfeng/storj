@@ -9,7 +9,7 @@ CREATE TABLE offers (
 	invitee_credit_duration_days integer NOT NULL,
 	redeemable_cap integer NOT NULL,
 	num_redeemed integer NOT NULL,
-	offer_duration_days integer NOT NULL,
+	expires_at timestamp with time zone,
 	created_at timestamp with time zone NOT NULL,
 	status integer NOT NULL,
 	PRIMARY KEY ( id )
@@ -268,4 +268,4 @@ INSERT INTO "pending_audits" ("node_id", "piece_id", "stripe_index", "share_size
 
 -- NEW DATA --
 
-INSERT INTO "offers" ("id", "name", "description", "type", "credit", "award_credit_duration_days", "invitee_credit_duration_days", "redeemable_cap", "num_redeemed", "offer_duration_days", "created_at", "status") VALUES (E'\\363\\342\\363\\371>+F\\256\\263\\300\\273|\\342N\\347\\014'::bytea, 'testOffer', 'Test offer 1', 0, 10, 14, 14, 50, 0, 10, '2019-02-14 08:28:24.636949+00', 0);
+INSERT INTO "offers" ("name", "description", "type", "credit", "award_credit_duration_days", "invitee_credit_duration_days", "redeemable_cap", "expires_at", "created_at") VALUES ('testOffer', 'Test offer 1', 0, 10, 14, 14, 50, '2019-03-14 08:28:24.636949+00', '2019-02-14 08:28:24.636949+00');
