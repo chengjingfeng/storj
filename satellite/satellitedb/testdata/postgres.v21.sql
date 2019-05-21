@@ -1,6 +1,6 @@
 -- Copied from the corresponding version of dbx generated schema
 CREATE TABLE offers (
-	id bytea NOT NULL,
+	id serial NOT NULL,
 	name text NOT NULL,
 	description text NOT NULL,
 	type integer NOT NULL,
@@ -268,4 +268,4 @@ INSERT INTO "pending_audits" ("node_id", "piece_id", "stripe_index", "share_size
 
 -- NEW DATA --
 
-INSERT INTO "offers" ("name", "description", "type", "credit", "award_credit_duration_days", "invitee_credit_duration_days", "redeemable_cap", "expires_at", "created_at") VALUES ('testOffer', 'Test offer 1', 0, 10, 14, 14, 50, '2019-03-14 08:28:24.636949+00', '2019-02-14 08:28:24.636949+00');
+INSERT INTO "offers" ("id", "name", "description", "type", "credit", "award_credit_duration_days", "invitee_credit_duration_days", "redeemable_cap", "expires_at", "created_at") VALUES (1, 'testOffer', 'Test offer 1', 0, 10, 14, 14, 50, '2019-03-14 08:28:24.636949+00', '2019-02-14 08:28:24.636949+00');
